@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+require 'watir-webdriver'
+
+# username and password
+credentials = "#{ENV['HOME']}/.olx"
+
+if File.exist?(credentials)
+	username,password = File.read(credentials).split
+else
+	# if the credentials file does not exist, get info from arguments
+	username = ARGV[0]
+	password = ARGV[1]
+end
+
+# start the browser, resize it (so it does not use the mobile version), and go to the page
+browser = Watir::Browser.new :phantomjs
+browser.window.resize_to(1400, 900)
+browser.goto "https://www.olx.pt/login/"
+
+# login
+browser.text_field(:name => 'form[email]').set username
+browser.text_field(:name => 'form[upw]').set password
+browser.button(:name => 'login').click
+
+browser.link(:text => 'Editar').wait_until_present
+
+while browser.link(:text => 'Prolongar').exists? do
+	# number of links with 'Prolongar'
+	num = browser.links(:text => 'Prolongar').size
+
+	num.times do
+		# workaround for a phantomjs bug, where it won't handle the javascript window correctly
+		browser.execute_script('window.confirm = function(){return true;}');
+		browser.link(:text => 'Prolongar').click
+	end
+
+	browser.refresh
+end
+
+browser.close

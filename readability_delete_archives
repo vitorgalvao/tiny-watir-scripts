@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+require 'watir-webdriver'
+
+# username and password
+credentials = "#{ENV['HOME']}/.readability"
+
+if File.exist?(credentials)
+	username,password = File.read(credentials).split
+else
+	# if the credentials file does not exist, get info from arguments
+	username = ARGV[0]
+	password = ARGV[1]
+end
+
+# start the browser, resize it (so it does not use the mobile version), and go to the page
+browser = Watir::Browser.new :phantomjs
+browser.window.resize_to(1400, 900)
+browser.goto 'https://readability.com'
+
+# login
+browser.link(:class => 'login').click
+browser.text_field(:id => 'login-username').set username
+browser.text_field(:id => 'login-password').set password
+browser.button(:value => 'Log In').click
+
+# check number of archived articles
+browser.span(:class => 'archives-count').wait_until_present
+articles_total = browser.span(:class => 'archives-count').text.to_i
+articles_perpage = 30.0
+articles_totalpages = (articles_total / articles_perpage).ceil
+
+# enter archives
+browser.li(:class => 'nav-archives').link.click
+
+# delete the articles
+articles_totalpages.times do
+	browser.link(:class => 'article-delete').wait_until_present
+
+	browser.links(:class => 'article-delete').each do |link|
+		link.click
+		browser.button(:text => 'Yes').when_present.click
+		browser.b(:text => 'Delete this article?').wait_while_present
+	end
+
+	browser.refresh
+end
+
+browser.close
