@@ -18,7 +18,7 @@ path = File.absolute_path(ARGV[0])
 
 # file with information
 # first line should be the title, second one the price, and all the subsequent ones will be part of the description
-lines = File.readlines("#{path}/info.txt")
+lines = File.readlines("#{path}/info.txt", :encoding => 'utf-8')
 title = lines[0]
 price = lines[1]
 description = lines[2..-1]
