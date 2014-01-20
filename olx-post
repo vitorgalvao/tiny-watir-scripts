@@ -37,7 +37,7 @@ browser.div(:id => 'create_adv_text').when_present.click
 # set details
 browser.text_field(:id => 'form_title').set title
 browser.div(:class => 'suggestion').when_present.click
-browser.text_field(:id => 'form_price').set price
+browser.text_field(:id => 'form_price').when_present.set price
 browser.text_field(:id => 'form_desc').set description
 
 # files to upload (filenames must end in .jpg)
