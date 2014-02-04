@@ -1,4 +1,4 @@
-# Collection of small ruby scripts that rely on watir-webdriver
+# Collection of small ruby scripts that rely on watir webdriver
 
 The easiest way to get these is via [this repository](https://github.com/vitorgalvao/homebrew-tinyscripts), as the install will take care of any eventual dependencies that are not already available on your system.
 
