@@ -8,6 +8,9 @@ Script to post ads to OLX quicker.
 ### olx-prolongar
 Script to automate the renewal of OLX expiring ads.
 
+### pedir-gas
+Script to ask gas delivery from drogaria Ponto Azul
+
 ### readability-delete-archives
 Script to delete you read archives from [readability](https://www.readability.com/).
 

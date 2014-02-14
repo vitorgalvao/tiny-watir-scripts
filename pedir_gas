@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'date'
+require 'watir-webdriver'
+
+# usage
+if ARGV[1].nil?
+  abort 'instruções: pedir_gas <daqui_a_quantos_dias_queres_a_entrega> <hora_da_entrega>'
+end
+
+# variables
+delivery_days_from_today = ARGV[0].to_i
+delivery_time = ARGV[1]
+
+# delivery details
+details = "#{ENV['HOME']}/.pontoazul"
+
+if File.exist?(details)
+  request = JSON.parse(IO.read(details))
+else
+  # create new file template
+  out_file = File.new(details, 'w')
+  out_file.puts(%{{
+    "Primeiro nome":    "",
+    "Apelido":          "",
+    "Morada":           "",
+    "Código postal":    "",
+    "Localidade":       "",
+    "NIF":              "",
+    "Email":            "",
+    "Telefone":         "",
+    "Garrafas": {
+        "Pluma 12kg":   "",
+        "Butano 13kg":  "",
+        "Propano 11kg": "",
+        "Propano 45kg": ""
+    }
+}})
+  out_file.close
+
+  abort 'Foi criado um ficheiro em "~/.pontoazul". Preenche-o com os dados necessários para começar a usar este script.'
+end
+
+# start the browser, resize it (to use mobile version), and go to the page
+browser = Watir::Browser.new :phantomjs
+browser.window.resize_to(1400, 900)
+browser.goto 'http://pontoazul.com.pt/encomendas.php'
+
+# fill details
+postal_code = request['Código postal'].split('-')
+delivery_date = (Date.today + delivery_days_from_today).strftime("%m/%d/%Y")
+
+browser.text_field(:id => 'Nome').set request['Primeiro nome']
+browser.text_field(:id => 'Apelido').set request['Apelido']
+browser.text_field(:id => 'Morada').set request['Morada']
+browser.text_field(:id => 'Codigo_Postal_1').set postal_code[0]
+browser.text_field(:id => 'Codigo_Postal').set postal_code[1]
+browser.text_field(:id => 'Localidade').set request['Localidade']
+browser.text_field(:id => 'NIF').set request['NIF']
+browser.text_field(:id => 'email').set request['Email']
+browser.text_field(:id => 'Telf').set request['Telefone']
+browser.text_field(:id => 'pluma12k').set request['Garrafas']['Pluma 12kg']
+browser.text_field(:id => 'butano13k').set request['Garrafas']['Butano 13kg']
+browser.text_field(:id => 'propano11k').set request['Garrafas']['Propano 11kg']
+browser.text_field(:id => 'propano45k').set request['Garrafas']['Propano 45kg']
+browser.text_field(:id => 'datepicker').set delivery_date
+browser.text_field(:id => 'horario').set delivery_time
+
+browser.button(:id => 'enviar').click
+browser.close
