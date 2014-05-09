@@ -2,15 +2,25 @@
 
 require 'watir-webdriver'
 
+# usage
+if ARGV[0].nil?
+  abort "instruções: olx-post <diretoria_com_imagens_e_info>
+
+  A diretoria deve conter imagens em .jpg, e um ficheiro 'info.txt', com pelo menos três linhas
+    - a primeira linha deverá ser o título do anúncio,
+    - a segunda o preço (sem símbolo de moeda)
+    - todas as seguintes farão parte da descrição"
+end
+
 # username and password
 credentials = "#{ENV['HOME']}/.olx"
 
 if File.exist?(credentials)
-	username,password = File.read(credentials).split
+  username,password = File.read(credentials).split
 else
-	# if the credentials file does not exist, get info from arguments
-	username = ARGV[1]
-	password = ARGV[2]
+  # if the credentials file does not exist, get info from arguments
+  username = ARGV[1]
+  password = ARGV[2]
 end
 
 # absolute path to the particular directory we want to act on
@@ -43,8 +53,8 @@ browser.text_field(:id => 'form_desc').set description
 # files to upload (filenames must end in .jpg)
 num = 0
 Dir.glob("#{path}/*.jpg") do |image|
-	num += 1
-	browser.file_field(:name => "file#{num}").set image
+  num += 1
+  browser.file_field(:name => "file#{num}").set image
 end
 
 browser.select_list(:id => 'bbr_district').select 'Lisboa'
