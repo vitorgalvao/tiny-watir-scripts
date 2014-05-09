@@ -6,7 +6,7 @@ require 'watir-webdriver'
 
 # usage
 if ARGV[1].nil?
-  abort "instruções: pedir_gas <daqui_a_quantos_dias_queres_a_entrega> <hora_da_entrega>"
+  abort "instruções: pedir-gas <daqui_a_quantos_dias_queres_a_entrega> <hora_da_entrega>"
 end
 
 # variables
