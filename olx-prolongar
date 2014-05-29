@@ -16,13 +16,13 @@ end
 # start the browser, resize it (so it does not use the mobile version), and go to the page
 browser = Watir::Browser.new :phantomjs
 browser.window.resize_to(1400, 900)
-browser.goto "https://www.olx.pt/login/"
+browser.goto 'https://www.olx.pt/login/'
 
 # login
 browser.text_field(:name => 'form[email]').set username
 browser.text_field(:name => 'form[upw]').set password
 browser.button(:name => 'login').click
-browser.goto "http://www.olx.pt/contapessoal/"
+browser.goto 'http://www.olx.pt/contapessoal/'
 
 browser.link(:text => 'Editar').wait_until_present
 
