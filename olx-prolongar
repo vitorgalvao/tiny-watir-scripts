@@ -6,11 +6,11 @@ require 'watir-webdriver'
 credentials = "#{ENV['HOME']}/.olx"
 
 if File.exist?(credentials)
-	username,password = File.read(credentials).split
+  username,password = File.read(credentials).split
 else
-	# if the credentials file does not exist, get info from arguments
-	username = ARGV[0]
-	password = ARGV[1]
+  # if the credentials file does not exist, get info from arguments
+  username = ARGV[0]
+  password = ARGV[1]
 end
 
 # start the browser, resize it (so it does not use the mobile version), and go to the page
@@ -26,17 +26,14 @@ browser.goto 'http://www.olx.pt/contapessoal/'
 
 browser.link(:text => 'Editar').wait_until_present
 
-while browser.link(:text => 'Prolongar').exists? do
-	# number of links with 'Prolongar'
-	num = browser.links(:text => 'Prolongar').size
-
-	num.times do
-		# workaround for a phantomjs bug, where it won't handle the javascript window correctly
-		browser.execute_script('window.confirm = function(){return true;}');
-		browser.link(:text => 'Prolongar').click
-	end
-
-	browser.refresh
+while browser.exists?
+  if browser.link(:text => 'Prolongar').exists?
+    # workaround for a phantomjs bug, where it won't handle the javascript window correctly
+    browser.execute_script('window.confirm = function(){return true;}');
+    browser.link(:text => 'Prolongar').click
+  elsif browser.link(:text => /Seguinte/).exists?
+    browser.link(:text => /Seguinte/).click
+  else
+    browser.close
+  end
 end
-
-browser.close
