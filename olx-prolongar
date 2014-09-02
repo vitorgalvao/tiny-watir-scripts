@@ -27,12 +27,12 @@ browser.goto 'http://www.olx.pt/contapessoal/'
 browser.link(:text => 'Editar').wait_until_present
 
 while browser.exists?
+  browser.link(:text => 'Fim').click if browser.link(:text => 'Fim').exists?
+
   if browser.link(:text => 'Prolongar').exists?
     # workaround for a phantomjs bug, where it won't handle the javascript window correctly
     browser.execute_script('window.confirm = function(){return true;}');
     browser.link(:text => 'Prolongar').click
-  elsif browser.link(:text => /Seguinte/).exists?
-    browser.link(:text => /Seguinte/).click
   else
     browser.close
   end
