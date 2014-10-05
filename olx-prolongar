@@ -22,7 +22,7 @@ browser.goto 'https://www.olx.pt/login/'
 browser.text_field(:name => 'form[email]').set username
 browser.text_field(:name => 'form[upw]').set password
 browser.button(:name => 'login').click
-browser.goto 'http://www.olx.pt/contapessoal/'
+browser.link(:href => '/contapessoal').when_present.click
 
 browser.link(:text => 'Editar').wait_until_present
 
