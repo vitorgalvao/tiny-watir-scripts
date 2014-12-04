@@ -1,0 +1,75 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+require 'watir-webdriver'
+
+# variables
+leitura_normal = ARGV[0]
+leitura_bi = ARGV[1]
+leitura_tri = ARGV[2]
+
+# details
+details = "#{ENV['HOME']}/.edp"
+
+if File.exist?(details)
+  edp_values = YAML.load_file(details)
+else
+  # create new file template
+  out_file = File.new(details, 'w')
+  out_file.puts(%{---
+Nome:
+Telefone:
+Email:
+Electricidade:
+    CPE: # complete, without spaces
+    Opcao Horaria: # 'simples', 'bi', 'tri'
+Gas natural:
+    CUI: # not yet working
+    Leitura: # not yet working
+...})
+  out_file.close
+
+  abort 'Foi criado um ficheiro em "~/.edp". Preenche-o com os dados necessários para começar a usar este script.'
+end
+
+# check hourly option
+hourly_option = edp_values['Electricidade']['Opcao Horaria'].capitalize
+
+if (hourly_option == 'Simples') && ARGV[0].nil? || (hourly_option == 'Bi') && ARGV[1].nil? || (hourly_option == 'Tri') && ARGV[2].nil?
+  abort 'instruções: contagem-edp <contagem_simples> <contagem_bi-horária> <contagem_tri-horária>'+"\n"*2+'Precisas de dar o número de contagens referente ao tipo de horário.'
+end
+
+# start the browser, resize it (to use mobile version), and go to the page
+browser = Watir::Browser.new :phantomjs
+browser.window.resize_to(1400, 900)
+browser.goto 'https://energia.edp.pt/particulares/apoio-ao-cliente/envio-de-leituras.aspx'
+
+# convert page ids to constants, for easier use
+Nome_id = 'ContentPlaceHolderDefault_BodyPlaceholder_MainPlaceholder_CenterContentPlaceholder_tbName'
+Telefone_id = 'ContentPlaceHolderDefault_BodyPlaceholder_MainPlaceholder_CenterContentPlaceholder_tbPhone'
+Email_id = 'ContentPlaceHolderDefault_BodyPlaceholder_MainPlaceholder_CenterContentPlaceholder_tbEmail'
+Cpe_int_id = 'ContentPlaceHolderDefault_BodyPlaceholder_MainPlaceholder_CenterContentPlaceholder_tbIdentificationCode'
+Cpe_str_id = 'ContentPlaceHolderDefault_BodyPlaceholder_MainPlaceholder_CenterContentPlaceholder_tbIdentificationCode2'
+Leitura_normal_id = 'ContentPlaceHolderDefault_BodyPlaceholder_MainPlaceholder_CenterContentPlaceholder_tbNormalReading'
+Leitura_bi_id = 'ContentPlaceHolderDefault_BodyPlaceholder_MainPlaceholder_CenterContentPlaceholder_tbEconomicReading'
+Leitura_tri_id = 'ContentPlaceHolderDefault_BodyPlaceholder_MainPlaceholder_CenterContentPlaceholder_tbSuperEconomicReading'
+Submit_id = 'ContentPlaceHolderDefault_BodyPlaceholder_MainPlaceholder_CenterContentPlaceholder_btnSubmit'
+
+# set hourly option
+browser.link(:class => 'tbProductCounterType').click
+browser.ul(:class => 'tbProductCounterType-selectBox-dropdown-menu').link(:text => %r{#{hourly_option}.*}).click
+
+# fill details
+cpe = edp_values['Electricidade']['CPE'].upcase.sub('PT0002','').split(%r{([^\d]{2})$})
+
+browser.text_field(:id => Nome_id).set edp_values['Nome']
+browser.text_field(:id => Telefone_id).set edp_values['Telefone']
+browser.text_field(:id => Email_id).set edp_values['Email']
+browser.text_field(:id => Cpe_int_id).set cpe[0]
+browser.text_field(:id => Cpe_str_id).set cpe[1]
+browser.text_field(:id => Leitura_normal_id).set leitura_normal
+browser.text_field(:id => Leitura_bi_id).set leitura_bi if (hourly_option == "Bi") || (hourly_option == "Tri")
+browser.text_field(:id => Leitura_tri_id).set leitura_tri if (hourly_option == "Tri")
+
+browser.button(:id => Submit_id).click
+browser.close
