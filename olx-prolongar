@@ -33,6 +33,7 @@ while browser.exists?
     # workaround for a phantomjs bug, where it won't handle the javascript window correctly
     browser.execute_script('window.confirm = function(){return true;}');
     browser.link(:text => 'Prolongar').click
+    browser.div(:id => 'boxr').wait_until_present
   else
     browser.close
   end
