@@ -24,7 +24,7 @@ browser.text_field(:name => 'form[upw]').set password
 browser.button(:name => 'login').click
 browser.link(:href => '/contapessoal').when_present.click
 
-browser.link(:text => 'Editar').wait_until_present
+browser.link(:text => 'Remover').wait_until_present
 
 while browser.exists?
   browser.link(:text => 'Fim').click if browser.link(:text => 'Fim').exists?
