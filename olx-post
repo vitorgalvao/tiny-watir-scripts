@@ -9,7 +9,7 @@ if ARGV[0].nil?
   A diretoria deve conter imagens em .jpg, e um ficheiro 'info.txt', com pelo menos três linhas
     - a primeira linha deverá ser o título do anúncio
     - a segunda o preço (sem símbolo de moeda)
-    - todas as seguintes farão parte da descrição"
+    - todas as seguintes farão parte da descrição".sub(%r{^ {2}},'')
 end
 
 # username and password
