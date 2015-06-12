@@ -4,7 +4,7 @@ require 'watir-webdriver'
 
 # usage
 if ARGV[0].nil?
-  abort "instruções: olx-post <diretoria_com_imagens_e_info>
+  abort "instruções: #{$PROGRAM_NAME} <diretoria_com_imagens_e_info>
 
   A diretoria deve conter imagens em .jpg, e um ficheiro 'info.txt', com pelo menos três linhas
     - a primeira linha deverá ser o título do anúncio

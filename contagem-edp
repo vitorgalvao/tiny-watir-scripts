@@ -36,7 +36,7 @@ end
 hourly_option = edp_values['Electricidade']['Opcao Horaria'].capitalize
 
 if (hourly_option == 'Simples') && ARGV[0].nil? || (hourly_option == 'Bi') && ARGV[1].nil? || (hourly_option == 'Tri') && ARGV[2].nil?
-  abort 'instruções: contagem-edp <contagem_simples> <contagem_bi-horária> <contagem_tri-horária>'+"\n"*2+'Precisas de dar o número de contagens referente ao tipo de horário.'
+  abort "instruções: #{$PROGRAM_NAME} <contagem_simples> <contagem_bi-horária> <contagem_tri-horária>"+"\n"*2+'Precisas de dar o número de contagens referente ao tipo de horário.'
 end
 
 # start the browser, resize it (to use mobile version), and go to the page
