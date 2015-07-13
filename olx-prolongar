@@ -6,34 +6,30 @@ require 'watir-webdriver'
 credentials = "#{ENV['HOME']}/.olx"
 
 if File.exist?(credentials)
-  username,password = File.read(credentials).split
+  username, password = File.read(credentials).split
 else
   # if the credentials file does not exist, get info from arguments
   username = ARGV[0]
   password = ARGV[1]
 end
 
-# start the browser, resize it (so it does not use the mobile version), and go to the page
+# start the browser and go to the page
 browser = Watir::Browser.new :phantomjs
-browser.window.resize_to(1400, 900)
-browser.goto 'https://www.olx.pt/login/'
+browser.goto 'https://olx.pt/account/'
 
 # login
-browser.text_field(:name => 'form[email]').set username
-browser.text_field(:name => 'form[upw]').set password
-browser.button(:name => 'login').click
-browser.link(:href => '/contapessoal').when_present.click
+browser.text_field(id: 'userEmail').set username
+browser.text_field(id: 'userPass').set password
+browser.button(id: 'se_userLogin').click
 
-browser.link(:text => 'Remover').wait_until_present
+# go to correct page
+browser.goto 'http://olx.pt/myaccount/archive/'
+browser.link(class: 'cookiesBarClose').click # needs to be closed, or will block other actions
 
 while browser.exists?
-  browser.link(:text => 'Fim').click if browser.link(:text => 'Fim').exists?
-
-  if browser.link(:text => 'Prolongar').exists?
-    # workaround for a phantomjs bug, where it won't handle the javascript window correctly
-    browser.execute_script('window.confirm = function(){return true;}');
-    browser.link(:text => 'Prolongar').click
-    browser.div(:id => 'boxr').wait_until_present
+  if browser.link(title: 'Activar anúncio').exists?
+    browser.links(title: 'Activar anúncio').each(&:click)
+    browser.refresh
   else
     browser.close
   end
