@@ -1,6 +1,6 @@
 # Collection of small ruby scripts that rely on watir webdriver
 
-The easiest way to get these is via [this repository](https://github.com/vitorgalvao/homebrew-tinyscripts), as the install will take care of any eventual dependencies that are not already available on your system.
+If you have [homebrew](http://brew.sh), you can get these via [this repository](https://github.com/vitorgalvao/homebrew-tinyscripts). Alternatively, download the scripts you wish to use and run them in your preferred manner.
 
 ### contagem-edp
 Script to send your energy usage to EDP
