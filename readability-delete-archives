@@ -1,16 +1,22 @@
 #!/usr/bin/env ruby
 
-require 'watir-webdriver'
+# ensure watir-webdriver is installed
+begin
+  require 'watir-webdriver'
+rescue Gem::LoadError
+  puts 'watir-webdriver isn’t installed. Installing it now…'
+  system('gem install watir-webdriver')
+end
 
 # username and password
 credentials = "#{ENV['HOME']}/.readability"
 
 if File.exist?(credentials)
-	username,password = File.read(credentials).split
+  username,password = File.read(credentials).split
 else
-	# if the credentials file does not exist, get info from arguments
-	username = ARGV[0]
-	password = ARGV[1]
+  # if the credentials file does not exist, get info from arguments
+  username = ARGV[0]
+  password = ARGV[1]
 end
 
 # start the browser, resize it (to use mobile version), and go to the page
@@ -31,16 +37,16 @@ browser.link(:class => 'icon-archive').when_present.click
 # delete bookmarks
 browser.div(:class => 'bookmark-search').wait_until_present
 while browser.button(:class => 'item-controls-toggle').exists? do
-	# number of archived links on page
-	num = browser.buttons(:class => 'item-controls-toggle').size
+  # number of archived links on page
+  num = browser.buttons(:class => 'item-controls-toggle').size
 
-	num.times do
-		browser.button(:class => 'item-controls-toggle').click
-		browser.button(:class => 'icon-delete').when_present.click
-		sleep(1)
-	end
+  num.times do
+    browser.button(:class => 'item-controls-toggle').click
+    browser.button(:class => 'icon-delete').when_present.click
+    sleep(1)
+  end
 
-	browser.refresh
+  browser.refresh
 end
 
 browser.close

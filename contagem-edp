@@ -1,7 +1,14 @@
 #!/usr/bin/env ruby
 
+# ensure watir-webdriver is installed
+begin
+  require 'watir-webdriver'
+rescue Gem::LoadError
+  puts 'watir-webdriver isn’t installed. Installing it now…'
+  system('gem install watir-webdriver')
+end
+
 require 'yaml'
-require 'watir-webdriver'
 
 # variables
 leitura_normal = ARGV[0]

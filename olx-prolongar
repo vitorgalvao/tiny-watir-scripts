@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby
 
-require 'watir-webdriver'
+# ensure watir-webdriver is installed
+begin
+  require 'watir-webdriver'
+rescue Gem::LoadError
+  puts 'watir-webdriver isn’t installed. Installing it now…'
+  system('gem install watir-webdriver')
+end
 
 # username and password
 credentials = "#{ENV['HOME']}/.olx"
