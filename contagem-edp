@@ -16,7 +16,7 @@ leitura_bi = ARGV[1]
 leitura_tri = ARGV[2]
 
 # details
-details = "#{ENV['HOME']}/.edp"
+details = "#{ENV['HOME']}/.config/edp"
 
 if File.exist?(details)
   edp_values = YAML.load_file(details)
@@ -36,7 +36,7 @@ Gas natural:
 ...))
   out_file.close
 
-  abort 'Foi criado um ficheiro em "~/.edp". Preenche-o com os dados necessários para começar a usar este script.'
+  abort "Foi criado um ficheiro em '#{details}'. Preenche-o com os dados necessários para começar a usar este script."
 end
 
 # check hourly option

@@ -19,7 +19,7 @@ if ARGV[0].nil?
 end
 
 # username and password
-credentials = "#{ENV['HOME']}/.olx"
+credentials = "#{ENV['HOME']}/.config/olx"
 
 if File.exist?(credentials)
   username,password = File.read(credentials).split

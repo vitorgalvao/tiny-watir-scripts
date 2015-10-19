@@ -21,7 +21,7 @@ delivery_days_from_today = ARGV[0].to_i
 delivery_time = ARGV[1]
 
 # delivery details
-details = "#{ENV['HOME']}/.pontoazul"
+details = "#{ENV['HOME']}/.config/pontoazul"
 
 if File.exist?(details)
   request = YAML.load_file(details)
@@ -45,7 +45,7 @@ Garrafas: # Deixar esta linha em branco, preencher as seguintes com quantidades
 ...})
   out_file.close
 
-  abort 'Foi criado um ficheiro em "~/.pontoazul". Preenche-o com os dados necessários para começar a usar este script.'
+  abort "Foi criado um ficheiro em '#{details}'. Preenche-o com os dados necessários para começar a usar este script."
 end
 
 # start the browser, resize it (to use mobile version), and go to the page

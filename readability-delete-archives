@@ -9,7 +9,7 @@ rescue Gem::LoadError
 end
 
 # username and password
-credentials = "#{ENV['HOME']}/.readability"
+credentials = "#{ENV['HOME']}/.config/readability"
 
 if File.exist?(credentials)
   username,password = File.read(credentials).split
