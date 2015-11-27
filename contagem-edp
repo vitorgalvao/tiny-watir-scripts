@@ -32,7 +32,6 @@ Electricidade:
     Opcao Horaria: # 'simples', 'bi', 'tri'
 Gas natural:
     CUI: # not yet working
-    Leitura: # not yet working
 ...))
   out_file.close
 
