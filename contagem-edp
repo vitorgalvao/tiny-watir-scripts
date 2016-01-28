@@ -10,6 +10,21 @@ end
 
 require 'yaml'
 
+# extend String to colorize messages
+class String
+  def colorize(color_code)
+    "\e[#{color_code}m#{self}\e[0m"
+  end
+
+  def red
+    colorize(31)
+  end
+
+  def green
+    colorize(32)
+  end
+end
+
 # variables
 leitura_normal = ARGV[0]
 leitura_bi = ARGV[1]
@@ -60,7 +75,23 @@ browser.select(name: 'horario').select_value hourly_option # set hourly option
 
 browser.text_field(name: 'NormalLeitura').set leitura_normal
 browser.text_field(name: 'EconomicoLeitura').set leitura_bi if (hourly_option == 'b') || (hourly_option == 't')
-browser.text_field(name: 'SuperEconomicoLeitura').set leitura_tri if (hourly_option == 't')
+browser.text_field(name: 'SuperEconomicoLeitura').set leitura_tri if hourly_option == 't'
 
 browser.link(class: 'send').click
+
+# wait for a response to be given
+response = browser.p(class: 'error-message').text
+while (response == '* Campos de preenchimento obrigatório.') || (response == 'A enviar dados. Aguarde por favor.')
+  sleep 1
+  response = browser.p(class: 'error-message').text
+end
+
 browser.close
+
+if response == 'Leitura Enviada. Obrigado.'
+  puts response.green
+  exit 0
+else
+  puts response.red
+  exit 1
+end
