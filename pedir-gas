@@ -11,6 +11,21 @@ end
 require 'yaml'
 require 'date'
 
+# extend String to colorize messages
+class String
+  def colorize(color_code)
+    "\e[#{color_code}m#{self}\e[0m"
+  end
+
+  def red
+    colorize(31)
+  end
+
+  def green
+    colorize(32)
+  end
+end
+
 # usage
 if ARGV[1].nil?
   abort "instruções: pedir-gas <daqui_a_quantos_dias_queres_a_entrega> <hora_da_entrega>"
@@ -74,4 +89,12 @@ browser.text_field(id: 'datepicker').set delivery_date
 browser.text_field(id: 'horario').set delivery_time
 
 browser.button(id: 'enviar').click
+begin
+  browser.div(text: /O seu pedido foi enviado com sucesso./).wait_until_present
+rescue
+  puts 'Houve um problema a enviar o pedido.'.red
+  raise
+else
+  puts 'Pedido enviado com sucesso.'.green
+end
 browser.close
