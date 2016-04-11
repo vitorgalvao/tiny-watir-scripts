@@ -28,7 +28,7 @@ if File.exist?(details)
 else
   # create new file template
   out_file = File.new(details, 'w')
-  out_file.puts(%{---
+  out_file.puts(%(---
 Primeiro nome:
 Apelido:
 Morada:
@@ -42,7 +42,7 @@ Garrafas: # Deixar esta linha em branco, preencher as seguintes com quantidades
     Butano 13kg:
     Propano 11kg:
     Propano 45kg:
-...})
+...))
   out_file.close
 
   abort "Foi criado um ficheiro em '#{details}'. Preenche-o com os dados necessários para começar a usar este script."
@@ -55,23 +55,23 @@ browser.goto 'http://pontoazul.com.pt/encomendas.php'
 
 # fill details
 postal_code = request['Código postal'].split('-')
-delivery_date = (Date.today + delivery_days_from_today).strftime("%m/%d/%Y")
+delivery_date = (Date.today + delivery_days_from_today).strftime('%m/%d/%Y')
 
-browser.text_field(:id => 'Nome').set request['Primeiro nome']
-browser.text_field(:id => 'Apelido').set request['Apelido']
-browser.text_field(:id => 'Morada').set request['Morada']
-browser.text_field(:id => 'Codigo_Postal_1').set postal_code[0]
-browser.text_field(:id => 'Codigo_Postal').set postal_code[1]
-browser.text_field(:id => 'Localidade').set request['Localidade']
-browser.text_field(:id => 'NIF').set request['NIF']
-browser.text_field(:id => 'email').set request['Email']
-browser.text_field(:id => 'Telf').set request['Telefone']
-browser.text_field(:id => 'pluma12k').set request['Garrafas']['Pluma 12kg']
-browser.text_field(:id => 'butano13k').set request['Garrafas']['Butano 13kg']
-browser.text_field(:id => 'propano11k').set request['Garrafas']['Propano 11kg']
-browser.text_field(:id => 'propano45k').set request['Garrafas']['Propano 45kg']
-browser.text_field(:id => 'datepicker').set delivery_date
-browser.text_field(:id => 'horario').set delivery_time
+browser.text_field(id: 'Nome').set request['Primeiro nome']
+browser.text_field(id: 'Apelido').set request['Apelido']
+browser.text_field(id: 'Morada').set request['Morada']
+browser.text_field(id: 'Codigo_Postal_1').set postal_code[0]
+browser.text_field(id: 'Codigo_Postal').set postal_code[1]
+browser.text_field(id: 'Localidade').set request['Localidade']
+browser.text_field(id: 'NIF').set request['NIF']
+browser.text_field(id: 'email').set request['Email']
+browser.text_field(id: 'Telf').set request['Telefone']
+browser.text_field(id: 'pluma12k').set request['Garrafas']['Pluma 12kg']
+browser.text_field(id: 'butano13k').set request['Garrafas']['Butano 13kg']
+browser.text_field(id: 'propano11k').set request['Garrafas']['Propano 11kg']
+browser.text_field(id: 'propano45k').set request['Garrafas']['Propano 45kg']
+browser.text_field(id: 'datepicker').set delivery_date
+browser.text_field(id: 'horario').set delivery_time
 
-browser.button(:id => 'enviar').click
+browser.button(id: 'enviar').click
 browser.close
