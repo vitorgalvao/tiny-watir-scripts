@@ -12,7 +12,7 @@ end
 credentials = "#{ENV['HOME']}/.config/readability"
 
 if File.exist?(credentials)
-  username,password = File.read(credentials).split
+  username, password = File.read(credentials).split
 else
   # if the credentials file does not exist, get info from arguments
   username = ARGV[0]
@@ -25,24 +25,24 @@ browser.window.resize_to(320, 700)
 browser.goto 'https://readability.com/login/'
 
 # login
-browser.text_field(:id => 'username').set username
-browser.text_field(:id => 'password').set password
-browser.button(:value => 'Log In').click
+browser.text_field(id: 'username').set username
+browser.text_field(id: 'password').set password
+browser.button(value: 'Log In').click
 
 # go to archives
-browser.link(:class => 'toggle-nav-btn').when_present.click
-browser.link(:class => 'nav-reading-list').when_present.click
-browser.link(:class => 'icon-archive').when_present.click
+browser.link(class: 'toggle-nav-btn').when_present.click
+browser.link(class: 'nav-reading-list').when_present.click
+browser.link(class: 'icon-archive').when_present.click
 
 # delete bookmarks
-browser.div(:class => 'bookmark-search').wait_until_present
-while browser.button(:class => 'item-controls-toggle').exists? do
+browser.div(class: 'bookmark-search').wait_until_present
+while browser.button(class: 'item-controls-toggle').exists?
   # number of archived links on page
-  num = browser.buttons(:class => 'item-controls-toggle').size
+  num = browser.buttons(class: 'item-controls-toggle').size
 
   num.times do
-    browser.button(:class => 'item-controls-toggle').click
-    browser.button(:class => 'icon-delete').when_present.click
+    browser.button(class: 'item-controls-toggle').click
+    browser.button(class: 'icon-delete').when_present.click
     sleep(1)
   end
 
