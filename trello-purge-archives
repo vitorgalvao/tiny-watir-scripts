@@ -1,0 +1,87 @@
+#!/usr/bin/env ruby
+
+# ensure watir-webdriver is installed
+begin
+  require 'watir-webdriver'
+rescue Gem::LoadError
+  puts 'watir-webdriver isn’t installed. Installing it now…'
+  system('gem install watir-webdriver')
+end
+
+# username and password
+credentials = "#{ENV['HOME']}/.config/trello"
+
+if File.exist?(credentials)
+  username, password = File.read(credentials).split
+else
+  # if the credentials file does not exist, get info from arguments
+  abort "You need to either give your email and password (in that order) as arguments, or store them (one in each line) in #{ENV['HOME']}/.config/trello" if ARGV[1].nil?
+  username = ARGV[0]
+  password = ARGV[1]
+end
+
+browser = Watir::Browser.new :phantomjs
+browser.window.resize_to(1400, 900)
+
+puts 'Logging in to Trello…'
+browser.goto 'https://trello.com/login'
+browser.text_field(id: 'user').set username
+browser.text_field(id: 'password').set password
+browser.input(id: 'login').click
+sleep 3
+
+archives_listing = 'https://trello.com/search?q=is%3Aarchived'
+loading_search = browser.p(class: 'search-warning js-searching')
+previous_message = '' # Will help later with not repeating the 'deleting' message in case where the card is retried
+all_archives_deleted = false
+card_sidebar = browser.div(class: 'window-sidebar')
+archive_btn = browser.link(class: 'button-link js-archive-card')
+delete_btn = browser.link(class: 'button-link negate js-delete-card')
+confirm_delete_btn = browser.input(class: 'js-confirm negate full')
+
+puts 'Listing all archived cards…'
+browser.goto archives_listing
+loading_search.wait_while_present
+
+until all_archives_deleted
+  card = browser.div(class: 'search-result-card')
+  # Occasionally Trello will need a browser refresh before showing results
+  card_searching_timeouts = 0 # Reset counter to make we only count consecutive timeouts
+  begin
+    card.wait_until_present
+  rescue Watir::Wait::TimeoutError
+    card_searching_timeouts += 1
+    if card_searching_timeouts > 9 # '9' is a reasonable number of tries
+      all_archives_deleted = true
+      next
+    end
+    browser.refresh
+    retry
+  end
+  card_link = card.link(class: 'search-result-card-details-name').href
+  card_name = card.link(class: 'search-result-card-details-name').text
+  card_details = card.p(class: 'u-bottom quiet').text
+  next if card_details.nil? || card_details.empty? # For when information isn't gathered correctly
+
+  message = "Deleting #{card_name} (#{card_details})…"
+  puts message unless message == previous_message
+  previous_message = message
+
+  browser.goto card_link
+  # In case Trello takes too long to load the card
+  begin
+    card_sidebar.wait_until_present
+  rescue Watir::Wait::TimeoutError
+    browser.refresh
+    retry
+  end
+  archive_btn.click if archive_btn.present? # For cards that were't directly archived but are on closed boards
+  delete_btn.when_present.click
+  confirm_delete_btn.click
+  browser.goto archives_listing
+
+  loading_search.wait_while_present
+end
+
+puts 'Deleted all archived cards and cards in closed boards.'
+browser.close

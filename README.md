@@ -17,5 +17,10 @@ Script to ask gas delivery from drogaria Ponto Azul
 ### readability-delete-archives
 Script to delete you read archives from [readability](https://www.readability.com/)
 
+### trello-purge-archives
+Script to permanently delete all archived cards and cards in closed boards on [Trello](https://trello.com)
+![](https://i.imgur.com/xC7FCBW.gif)
+
+
 #### License
 The Unlicense (Public Domain, essentially)
