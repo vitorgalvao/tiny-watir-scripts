@@ -28,16 +28,16 @@ end
 
 # usage
 if ARGV[2].nil?
-  abort "instruções: pedir-gas <daqui_a_quantos_dias_queres_a_entrega> <hora_da_entrega> <quantidade_de_garrafas>"
+  abort "instruções: pedir-gas <quantidade_de_garrafas> <daqui_a_quantos_dias_queres_a_entrega> <hora_da_entrega>"
 end
 
 # variables
 bottles_array = %w(pluma12k butano13k propano11k propano45k)
 bottles_string = bottles_array.map { |b| "'#{b}'" }.join(', ')
 
-delivery_days_from_today = ARGV[0].to_i
-delivery_time = ARGV[1]
-number_of_bottles = ARGV[2]
+bottle_quantity = ARGV[0]
+delivery_days_from_today = ARGV[1].to_i
+delivery_time = ARGV[2]
 
 # delivery details
 details = "#{ENV['HOME']}/.config/pontoazul"
@@ -83,7 +83,7 @@ browser.text_field(id: 'Localidade').set request['Localidade']
 browser.text_field(id: 'NIF').set request['NIF']
 browser.text_field(id: 'email').set request['Email']
 browser.text_field(id: 'Telf').set request['Telefone']
-browser.text_field(id: request['Garrafas']).set number_of_bottles
+browser.text_field(id: request['Garrafas']).set bottle_quantity
 browser.text_field(id: 'datepicker').set delivery_date
 browser.text_field(id: 'horario').set delivery_time
 
