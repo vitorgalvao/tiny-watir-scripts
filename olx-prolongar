@@ -27,16 +27,19 @@ browser.goto 'https://olx.pt/account/'
 browser.text_field(id: 'userEmail').set username
 browser.text_field(id: 'userPass').set password
 browser.button(id: 'se_userLogin').click
+browser.button(id: 'se_userLogin').wait_while_present
 
 # go to correct page
-browser.goto 'http://olx.pt/myaccount/archive/'
+browser.goto 'https://olx.pt/myaccount/'
 browser.link(class: 'cookiesBarClose').click # needs to be closed, or will block other actions
 
-while browser.exists?
-  if browser.link(title: 'Activar anúncio').exists?
-    browser.links(title: 'Activar anúncio').each(&:click)
-    browser.refresh
-  else
-    browser.close
-  end
+loop do
+  sleep 3 # with the new site implementation, there seems to be nothing we can reliably grab on to check if the page changed and loaded
+  browser.links(class: 'extendLink').each(&:click) if browser.link(class: 'extendLink').exists?
+
+  next_button = browser.span(class: 'fbold next abs large').link
+  break unless next_button.exists?
+  next_button.click
 end
+
+browser.close
