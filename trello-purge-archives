@@ -46,7 +46,7 @@ loading_search.wait_while_present
 until all_archives_deleted
   card = browser.div(class: 'search-result-card')
   # Occasionally Trello will need a browser refresh before showing results
-  card_searching_timeouts = 0 # Reset counter to make we only count consecutive timeouts
+  card_searching_timeouts = 0 # Reset counter to make sure we only count consecutive timeouts
   begin
     card.wait_until_present
   rescue Watir::Wait::TimeoutError
