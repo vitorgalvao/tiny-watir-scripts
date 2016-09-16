@@ -8,6 +8,8 @@ rescue Gem::LoadError
   system('gem install watir-webdriver')
 end
 
+Watir.default_timeout = 10
+
 require 'yaml'
 
 # extend String to colorize messages
@@ -77,21 +79,19 @@ browser.text_field(name: 'NormalLeitura').set leitura_normal
 browser.text_field(name: 'EconomicoLeitura').set leitura_bi if (hourly_option == 'b') || (hourly_option == 't')
 browser.text_field(name: 'SuperEconomicoLeitura').set leitura_tri if hourly_option == 't'
 
+sleep 2 # wait a moment before clicking or it will be too fast and the site will think some fields are not filled
 browser.link(class: 'send').click
 
 # wait for a response to be given
-response = browser.p(class: 'error-message').text
-while (response == '* Campos de preenchimento obrigatório.') || (response == 'A enviar dados. Aguarde por favor.')
-  sleep 1
-  response = browser.p(class: 'error-message').text
-end
+begin
+  browser.div(class: 'sucess-message').wait_until_present # 'sucess' is a typo on the site.
+  puts 'Leitura enviada com sucesso.'.green
 
-browser.close
-
-if response == 'Leitura Enviada. Obrigado.'
-  puts response.green
+  browser.close
   exit 0
-else
-  puts response.red
+rescue Watir::Wait::TimeoutError
+  puts browser.p(class: 'error-message').text.red
+
+  browser.close
   exit 1
 end
