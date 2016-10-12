@@ -37,7 +37,7 @@ all_archives_deleted = false
 card_sidebar = browser.div(class: 'window-sidebar')
 archive_btn = browser.link(class: 'button-link js-archive-card')
 delete_btn = browser.link(class: 'button-link negate js-delete-card')
-confirm_delete_btn = browser.input(class: 'js-confirm negate full')
+confirm_delete_btn = browser.input(class: 'js-confirm full negate')
 
 puts 'Listing all archived cards…'
 browser.goto archives_listing
