@@ -8,8 +8,6 @@ rescue Gem::LoadError
   system('gem install watir')
 end
 
-Watir.default_timeout = 10
-
 require 'yaml'
 
 # extend String to colorize messages
