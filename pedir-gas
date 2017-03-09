@@ -28,7 +28,7 @@ end
 
 # usage
 if ARGV[2].nil?
-  abort "instruções: pedir-gas <quantidade_de_garrafas> <daqui_a_quantos_dias_queres_a_entrega> <hora_da_entrega>"
+  abort 'instruções: pedir-gas <quantidade_de_garrafas> <daqui_a_quantos_dias_queres_a_entrega> <hora_da_entrega>'
 end
 
 # variables
