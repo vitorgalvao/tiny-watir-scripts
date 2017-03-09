@@ -59,6 +59,7 @@ NIF:
 Email:
 Telefone:
 Garrafas: # Deixar um de: #{bottles_string}
+Mensagem: # Opcional
 ...))
   out_file.close
 
@@ -86,6 +87,7 @@ browser.text_field(id: 'Telf').set request['Telefone']
 browser.text_field(id: request['Garrafas']).set bottle_quantity
 browser.text_field(id: 'datepicker').set delivery_date
 browser.text_field(id: 'horario').set delivery_time
+browser.textarea(id: 'Mensagem_Encomenda').set request['Mensagem']
 
 browser.button(id: 'enviar').click
 begin
