@@ -67,7 +67,7 @@ Mensagem: # Opcional
 end
 
 # start the browser, resize it (to use mobile version), and go to the page
-browser = Watir::Browser.new :phantomjs
+browser = Watir::Browser.new :chrome, switches: ['--headless']
 browser.window.resize_to(1400, 900)
 browser.goto 'http://pontoazul.com.pt/encomendas.php'
 
