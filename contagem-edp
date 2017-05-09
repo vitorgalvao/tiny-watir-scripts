@@ -60,8 +60,8 @@ if (hourly_option == 's') && ARGV[0].nil? || (hourly_option == 'b') && ARGV[1].n
   abort "instruções: #{$PROGRAM_NAME} <contagem_simples> <contagem_bi-horária> <contagem_tri-horária>" + "\n" * 2 + 'Precisas de dar o número de contagens referente ao tipo de horário.'
 end
 
-# start the browser, resize it (to use mobile version), and go to the page
-browser = Watir::Browser.new :phantomjs
+# start the browser and go to the page
+browser = Watir::Browser.new :chrome, switches: ['--headless']
 browser.goto 'https://energia.edp.pt/particulares/apoio-ao-cliente/envio-de-leituras.aspx'
 
 # personal details
