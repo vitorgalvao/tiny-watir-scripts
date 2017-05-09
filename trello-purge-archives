@@ -76,7 +76,7 @@ until all_archives_deleted
     retry
   end
   archive_btn.click if archive_btn.present? # For cards that were't directly archived but are on closed boards
-  delete_btn.when_present.click
+  delete_btn.wait_until_present.click
   confirm_delete_btn.click
   browser.goto archives_listing
 
