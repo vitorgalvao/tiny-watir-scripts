@@ -20,7 +20,7 @@ else
   password = ARGV[1]
 end
 
-browser = Watir::Browser.new :phantomjs
+browser = Watir::Browser.new :chrome, switches: ['--headless']
 browser.window.resize_to(1400, 900)
 
 puts 'Logging in to Trello…'
