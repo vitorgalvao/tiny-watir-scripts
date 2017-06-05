@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# ensure watir is installed
+# Ensure watir is installed
 begin
   require 'watir'
 rescue Gem::LoadError
@@ -11,7 +11,7 @@ end
 require 'yaml'
 require 'date'
 
-# extend String to colorize messages
+# Extend String to colorize messages
 class String
   def colorize(color_code)
     "\e[#{color_code}m#{self}\e[0m"
@@ -31,7 +31,7 @@ if ARGV[2].nil?
   abort 'instruções: pedir-gas <quantidade_de_garrafas> <daqui_a_quantos_dias_queres_a_entrega> <hora_da_entrega>'
 end
 
-# variables
+# Variables
 bottles_array = %w(pluma12k butano13k propano11k propano45k)
 bottles_string = bottles_array.map { |b| "'#{b}'" }.join(', ')
 
@@ -39,15 +39,15 @@ bottle_quantity = ARGV[0]
 delivery_days_from_today = ARGV[1].to_i
 delivery_time = ARGV[2]
 
-# delivery details
+# Delivery details
 details = "#{ENV['HOME']}/.config/pontoazul"
 
 if File.exist?(details)
   request = YAML.load_file(details)
 
-  abort "'Garrafas' is wrong. It’s value needs to be one of: #{bottles_string}.".red unless bottles_array.include? request['Garrafas'] # check if 'Garrafas' has a valid value
+  abort "'Garrafas' is wrong. It’s value needs to be one of: #{bottles_string}.".red unless bottles_array.include? request['Garrafas'] # Check if 'Garrafas' has a valid value
 else
-  # create new file template
+  # Create new file template
   out_file = File.new(details, 'w')
   out_file.puts(%(---
 Primeiro nome:
@@ -66,12 +66,12 @@ Mensagem: # Opcional
   abort "Foi criado um ficheiro em '#{details}'. Preenche-o com os dados necessários para começar a usar este script.".red
 end
 
-# start the browser, resize it (to use mobile version), and go to the page
+# Start the browser, resize it (to use mobile version), and go to the page
 browser = Watir::Browser.new :chrome, switches: ['--headless']
 browser.window.resize_to(1400, 900)
 browser.goto 'http://pontoazul.com.pt/encomendas.php'
 
-# fill details
+# Fill details
 postal_code = request['Código postal'].split('-')
 delivery_date = (Date.today + delivery_days_from_today).strftime('%m/%d/%Y')
 
@@ -89,6 +89,7 @@ browser.text_field(id: 'datepicker').set delivery_date
 browser.text_field(id: 'horario').set delivery_time
 browser.textarea(id: 'Mensagem_Encomenda').set request['Mensagem']
 
+browser.text_field(id: 'horario').click # So the datepicker closes and the send button becomes visible, hence clickable
 browser.button(id: 'enviar').click
 begin
   browser.div(text: /O seu pedido foi enviado com sucesso./).wait_until_present
