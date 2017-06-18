@@ -20,7 +20,9 @@ else
 end
 
 # start the browser and go to the page
-browser = Watir::Browser.new :chrome, switches: ['--headless']
+browser_options = Selenium::WebDriver::Chrome::Options.new
+browser_options.add_argument('--headless')
+browser = Watir::Browser.new :chrome, options: browser_options
 browser.goto 'https://olx.pt/account/'
 
 # login

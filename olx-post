@@ -40,7 +40,9 @@ price = lines[1]
 description = lines[2..-1]
 
 # open browser and login
-browser = Watir::Browser.new :chrome, switches: ['--headless']
+browser_options = Selenium::WebDriver::Chrome::Options.new
+browser_options.add_argument('--headless')
+browser = Watir::Browser.new :chrome, options: browser_options
 browser.window.resize_to(1300, 700)
 browser.goto "https://www.olx.pt/login/"
 browser.text_field(:name => 'form[email]').set username

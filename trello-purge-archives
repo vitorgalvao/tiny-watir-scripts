@@ -20,7 +20,9 @@ else
   password = ARGV[1]
 end
 
-browser = Watir::Browser.new :chrome, switches: ['--headless']
+browser_options = Selenium::WebDriver::Chrome::Options.new
+browser_options.add_argument('--headless')
+browser = Watir::Browser.new :chrome, options: browser_options
 browser.window.resize_to(1400, 900)
 
 puts 'Logging in to Trello…'

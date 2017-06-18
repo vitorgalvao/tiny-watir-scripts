@@ -61,7 +61,9 @@ if (hourly_option == 's') && ARGV[0].nil? || (hourly_option == 'b') && ARGV[1].n
 end
 
 # start the browser and go to the page
-browser = Watir::Browser.new :chrome, switches: ['--headless']
+browser_options = Selenium::WebDriver::Chrome::Options.new
+browser_options.add_argument('--headless')
+browser = Watir::Browser.new :chrome, options: browser_options
 browser.goto 'https://energia.edp.pt/particulares/apoio-ao-cliente/envio-de-leituras.aspx'
 
 # personal details
