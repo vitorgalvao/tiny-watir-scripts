@@ -26,14 +26,12 @@ browser = Watir::Browser.new :chrome, options: browser_options
 browser.goto 'https://olx.pt/account/'
 
 # login
+browser.link(class: 'cookiesBarClose').click # needs to be closed, or will block other actions
 browser.text_field(id: 'userEmail').set username
 browser.text_field(id: 'userPass').set password
 browser.button(id: 'se_userLogin').click
 browser.button(id: 'se_userLogin').wait_while_present
-
-# go to correct page
-browser.goto 'https://olx.pt/myaccount/archive/'
-browser.link(class: 'cookiesBarClose').click # needs to be closed, or will block other actions
+browser.goto 'https://olx.pt/myaccount/archive/' # go to correct page
 
 loop do
   sleep 10 # with the new site implementation, there seems to be nothing we can reliably grab on to check if the page changed and loaded
