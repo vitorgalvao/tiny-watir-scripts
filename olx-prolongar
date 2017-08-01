@@ -35,9 +35,9 @@ browser.goto 'https://olx.pt/myaccount/archive/' # go to correct page
 
 loop do
   sleep 10 # with the new site implementation, there seems to be nothing we can reliably grab on to check if the page changed and loaded
-  browser.links(class: 'activate-link activateOffer').each(&:click) if browser.link(class: 'activate-link activateOffer').exists?
+  browser.links(class: %w[activate-link activateOffer]).each(&:click) if browser.link(class: %w[activate-link activateOffer]).exists?
 
-  next_button = browser.span(class: 'fbold next abs large').link
+  next_button = browser.span(class: %w[fbold next abs large]).link
   break unless next_button.exists?
   next_button.click
 end

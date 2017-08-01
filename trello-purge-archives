@@ -33,13 +33,13 @@ browser.input(id: 'login').click
 sleep 3
 
 archives_listing = 'https://trello.com/search?q=is%3Aarchived'
-loading_search = browser.p(class: 'search-warning js-searching')
+loading_search = browser.p(class: %w[search-warning js-searching])
 previous_message = '' # Will help later with not repeating the 'deleting' message in case where the card is retried
 all_archives_deleted = false
 card_sidebar = browser.div(class: 'window-sidebar')
-archive_btn = browser.link(class: 'button-link js-archive-card')
-delete_btn = browser.link(class: 'button-link negate js-delete-card')
-confirm_delete_btn = browser.input(class: 'js-confirm full negate')
+archive_btn = browser.link(class: %w[button-link js-archive-card])
+delete_btn = browser.link(class: %w[button-link negate js-delete-card])
+confirm_delete_btn = browser.input(class: %w[js-confirm full negate])
 
 puts 'Listing all archived cards…'
 browser.goto archives_listing
@@ -62,7 +62,7 @@ until all_archives_deleted
   end
   card_link = card.link(class: 'search-result-card-details-name').href
   card_name = card.link(class: 'search-result-card-details-name').text
-  card_details = card.p(class: 'u-bottom quiet').text
+  card_details = card.p(class: %w[u-bottom quiet]).text
   next if card_details.nil? || card_details.empty? # For when information isn't gathered correctly
 
   message = "Deleting #{card_name} (#{card_details})…"
