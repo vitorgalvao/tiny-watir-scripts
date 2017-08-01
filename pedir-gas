@@ -32,7 +32,7 @@ if ARGV[2].nil?
 end
 
 # Variables
-bottles_array = %w(pluma12k butano13k propano11k propano45k)
+bottles_array = %w[pluma12k butano13k propano11k propano45k]
 bottles_string = bottles_array.map { |b| "'#{b}'" }.join(', ')
 
 bottle_quantity = ARGV[0]
