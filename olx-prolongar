@@ -23,6 +23,7 @@ end
 browser_options = Selenium::WebDriver::Chrome::Options.new
 browser_options.add_argument('--headless')
 browser = Watir::Browser.new :chrome, options: browser_options
+browser.window.resize_to(1000, 600)
 browser.goto 'https://olx.pt/account/'
 
 # login
