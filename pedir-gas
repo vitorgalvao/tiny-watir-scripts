@@ -94,7 +94,7 @@ browser.textarea(id: 'Mensagem_Encomenda').set request['Mensagem']
 browser.text_field(id: 'horario').click # So the datepicker closes and the send button becomes visible, hence clickable
 browser.button(id: 'enviar').click
 begin
-  browser.div(text: /O seu pedido foi enviado com sucesso./).wait_until_present
+  browser.div(visible_text: /O seu pedido foi enviado com sucesso./).wait_until_present
 rescue
   puts 'Houve um problema a enviar o pedido.'.red
   raise
