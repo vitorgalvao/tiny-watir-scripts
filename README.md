@@ -5,9 +5,6 @@ If you have [homebrew](http://brew.sh), you can get these via [this repository](
 ### contagem-edp
 Script to send your energy usage to EDP
 
-### olx-post
-Script to post ads to OLX quicker
-
 ### olx-prolongar
 Script to automate the renewal of OLX expiring ads
 
