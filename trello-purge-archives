@@ -50,7 +50,7 @@ until all_archives_deleted
   # Occasionally Trello will need a browser refresh before showing results
   card_searching_timeouts = 0 # Reset counter to make sure we only count consecutive timeouts
   begin
-    card.wait_until_present
+    card.wait_until(&:present?)
   rescue Watir::Wait::TimeoutError
     card_searching_timeouts += 1
     if card_searching_timeouts > 9 # '9' is a reasonable number of tries
@@ -72,13 +72,13 @@ until all_archives_deleted
   browser.goto card_link
   # In case Trello takes too long to load the card
   begin
-    card_sidebar.wait_until_present
+    card_sidebar.wait_until(&:present?)
   rescue Watir::Wait::TimeoutError
     browser.refresh
     retry
   end
   archive_btn.click if archive_btn.present? # For cards that were't directly archived but are on closed boards
-  delete_btn.wait_until_present.click
+  delete_btn.wait_until(&:present?).click
   confirm_delete_btn.click
   browser.goto archives_listing
 
