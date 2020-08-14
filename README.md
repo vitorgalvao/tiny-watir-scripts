@@ -2,9 +2,6 @@
 
 If you have [homebrew](http://brew.sh), you can get these via [this repository](https://github.com/vitorgalvao/homebrew-tiny-scripts). Alternatively, download the scripts you wish to use and run them in your preferred manner.
 
-### contagem-edp
-Send your energy usage to EDP
-
 ### olx-prolongar
 Automate the renewal of OLX expiring ads
 
