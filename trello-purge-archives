@@ -43,7 +43,7 @@ confirm_delete_btn = browser.input(class: %w[js-confirm full negate])
 
 puts 'Listing all archived cards…'
 browser.goto archives_listing
-loading_search.wait_while_present
+loading_search.wait_while(&:present?)
 
 until all_archives_deleted
   card = browser.div(class: 'search-result-card')
@@ -82,7 +82,7 @@ until all_archives_deleted
   confirm_delete_btn.click
   browser.goto archives_listing
 
-  loading_search.wait_while_present
+  loading_search.wait_while(&:present?)
 end
 
 puts 'Deleted all archived cards and cards in closed boards.'
